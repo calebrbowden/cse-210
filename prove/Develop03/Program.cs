@@ -16,7 +16,7 @@ class Program
         if (choice == 1)
         {
             scripture._reference = "John 3:16";
-            scriptureString = "For God so loved the world...";
+            scriptureString = "For God so loved the world";
             Console.WriteLine(scripture._reference);
             scripture.Display(scriptureString);
         }
