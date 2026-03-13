@@ -1,1 +1,9 @@
+Date: 3/11/2026 - Prompt: What was the worst part of my day?
+Input: Nothing
+
+Date: 3/11/2026 - Prompt: What am I grateful for today?
+Input: Food
+
+Date: 3/11/2026 - Prompt: What would I do differently today?
+Input: nothing
 

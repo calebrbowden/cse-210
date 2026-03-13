@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        //I added a feature so the prompts won't repeat.
         Console.WriteLine("Hello Develop02 World!");
         Journal journal = new Journal();
         DateTime currentDate = DateTime.Now;
@@ -13,6 +14,11 @@ class Program
         journal._prompts.Add("What am I grateful for today?");
         journal._prompts.Add("What would I do differently today?");
         journal._prompts.Add("Who did I interact with today and how did it go?");
+        journal._nums.Add(0);
+        journal._nums.Add(1);
+        journal._nums.Add(2);
+        journal._nums.Add(3);
+        journal._nums.Add(4);
         Console.WriteLine("Welcome to the Journal Program!");
         int choice = 0;
         while (choice != 5)
@@ -28,14 +34,22 @@ class Program
         choice = int.Parse(input);
             if (choice == 1)
             {
-                Entry newEntry = new Entry();
-                string prompt = journal.ChoosePrompt();
-                string entry = Console.ReadLine();
-                newEntry._input = entry;
-                newEntry._prompt = prompt;
-                newEntry._date = date;
-                journal._entries.Add(newEntry);
-                choice = 0;
+                if(journal._nums.Sum() > 0)
+                {
+                    Entry newEntry = new Entry();
+                    string prompt = journal.ChoosePrompt();
+                    string entry = Console.ReadLine();
+                    newEntry._input = entry;
+                    newEntry._prompt = prompt;
+                    newEntry._date = date;
+                    journal._entries.Add(newEntry);
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("No more prompts are left.");
+                    Console.WriteLine();
+                }
             }
             if (choice == 2)
             {
@@ -43,7 +57,7 @@ class Program
             }
             if (choice == 3)
             {
-                
+                journal.Load();
             }
             if (choice == 4)
             {
