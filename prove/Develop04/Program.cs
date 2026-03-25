@@ -26,12 +26,16 @@ class Program
         if (choice == 2)
         {
             Reflecting reflect = new Reflecting();
-            activity.ShowIntro("Reflecting", reflect._info);
+            int time = activity.ShowIntro("Reflecting", reflect._info);
+            reflect.Reflect(time);
+            activity.ShowEnd(time, "Reflecting");
         }
         if (choice == 3)
         {
             Listing list = new Listing();
-            activity.ShowIntro("Listing", list._info);
+            int time = activity.ShowIntro("Listing", list._info);
+            list.List(time);
+            activity.ShowEnd(time, "Reflecting");
         }
     }
 }
