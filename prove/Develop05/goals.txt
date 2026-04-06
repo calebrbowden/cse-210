@@ -1,0 +1,7 @@
+You have 100 points.
+SimpleGoal: Run a marathon, Run a marathon this year, 1000
+
+EternalGoal: Run everyday, Run at least 3 miles everyday, 20
+
+CheckListGoal: Attend the temple, Attend the temple monthly, 50
+
