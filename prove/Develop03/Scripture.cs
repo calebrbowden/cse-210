@@ -1,8 +1,8 @@
 public class Scripture
 {
     public string _reference;
-    public List<string> _words = new List<string>();
-    string [] words;
+    private List<string> _words = new List<string>();
+    private string [] words;
 
     public void Display(string scripture)
     {

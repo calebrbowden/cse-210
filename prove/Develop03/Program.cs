@@ -31,7 +31,7 @@ class Program
         {
             Console.WriteLine();
             Console.WriteLine("Press enter to continue or type 'quit' to finish:");
-            Console.ReadLine();
+            input = Console.ReadLine();
             Console.Clear();
             Console.WriteLine(scripture._reference);
             scripture.Hide(scriptureString);
