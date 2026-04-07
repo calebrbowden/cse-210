@@ -3,8 +3,8 @@ public class Breathing : Activity
     public string _info = "relax by walking you through breathing in and out slowly. Clear your mind and focus on your breathing.";
     public void Breathe(int seconds)
     {
-        Console.WriteLine("Get ready...");
-        Console.WriteLine("");
+        Console.Clear();
+        CountDown();
 
         while(seconds > 0)
         {

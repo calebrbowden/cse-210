@@ -6,7 +6,11 @@ class Program
     static void Main(string[] args)
     {
         //Console.WriteLine("Hello Develop04 World!");
+        //I added a feature so the question prompts in the reflecting activity won't repeat.
         Console.WriteLine("Mindfulness Program");
+        int choice = 0;
+        while(choice != 4)
+        {
         Console.WriteLine("Menu Options:");
         Console.WriteLine("1. Start breathing activity");
         Console.WriteLine("2. Start reflecting activity");
@@ -15,7 +19,7 @@ class Program
         Console.Write("Select a choice from the menu: ");
         Activity activity = new Activity();
         string input = Console.ReadLine();
-        int choice = int.Parse(input);
+        choice = int.Parse(input);
         if (choice == 1)
         {
             Breathing breathe = new Breathing();
@@ -36,6 +40,7 @@ class Program
             int time = activity.ShowIntro("Listing", list._info);
             list.List(time);
             activity.ShowEnd(time, "Reflecting");
+        }
         }
     }
 }
