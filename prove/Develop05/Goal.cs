@@ -4,6 +4,7 @@ public class Goal
     protected string _description;
     protected int _points;
     public List<Goal> _goals = new List<Goal>();
+    protected int _level;
 
     public Goal(string name, string description, int points)
     {
@@ -23,65 +24,104 @@ public class Goal
     {
         return _points;
     }
-    public virtual void RecordGoal()
+    public virtual int RecordGoal()
     {
-        
+        return 0;
+    }
+    public int GetLevel(int points)
+    {
+        if (points >= 1000)
+        {
+            _level = 5;
+        }
+        else if (points >= 750)
+        {
+            _level = 4;
+        }
+        else if (points >= 500)
+        {
+            _level = 3;
+        }
+        else if (points >= 250)
+        {
+            _level = 2;
+        }
+        else
+        {
+            _level = 1;
+        }
+        return _level;
     }
     public void List()
     {
         foreach (Goal goal in _goals)
         {
             int number = _goals.IndexOf(goal) + 1;
-            Console.WriteLine($"{number}. [ ] {goal.GetName()} - {goal.GetDescription()} ({goal.GetPoints()} points)");
+            Console.WriteLine($"{number}. [{(goal is SimpleGoal ? ((SimpleGoal)goal).GetIsCompleted() ? "X" : " " : "")}{(goal is EternalGoal ? " " : "")}{(goal is CheckListGoal ? ((CheckListGoal)goal).GetTimesCompleted() >= ((CheckListGoal)goal).GetTimesToComplete() ? "X" : " " : "")}] {goal.GetName()} - {goal.GetDescription()} ({goal.GetPoints()} points) {goal.GetType().Name switch {
+                "CheckListGoal" => ((CheckListGoal)goal).GetStatus(),
+                _ => ""
+            }}");
         }
     }
-    public void Save()
+    public void Save(int points)
     {
         Console.Write("What is the filename? ");
         string filename = Console.ReadLine();
         using (StreamWriter outputFile = new StreamWriter(filename))
         {
-            outputFile.WriteLine($"You have {_points} points.");
+            outputFile.WriteLine($"{points}, {_level}");
             foreach (Goal goal in _goals)
             {
-                outputFile.WriteLine($"{goal.GetType().Name}: {goal.GetName()}, {goal.GetDescription()}, {goal.GetPoints()}");
-                outputFile.WriteLine();
+                outputFile.WriteLine($"{goal.GetType().Name}: {goal.GetName()}, {goal.GetDescription()}, {goal.GetPoints()}{goal.GetType().Name switch {
+                    "SimpleGoal" => $", {((SimpleGoal)goal).GetIsCompleted()}",
+                    "CheckListGoal" => $", {((CheckListGoal)goal).GetBonusPoints()}, {((CheckListGoal)goal).GetTimesToComplete()}, {((CheckListGoal)goal).GetTimesCompleted()}",
+                    _ => ""
+                }}");
+                //outputFile.WriteLine();
             }
         }
     }
-    public void Load()
+    public int Load()
     {
         Console.Write("What is the filename? ");
         string filename = Console.ReadLine();
         string[] lines = System.IO.File.ReadAllLines(filename);
         foreach (string line in lines)
         {
-            string[] parts = line.Split(",");
-            string type = parts[0].Trim();
-            Console.WriteLine(type);
-            _name = parts[1].Trim();
-            Console.WriteLine(_name);
-            _description = parts[2].Trim();
-            Console.WriteLine(_description);
-            _points = int.Parse(parts[3].Trim());
-            Console.WriteLine(_points);
-            if (type == "SimpleGoal")
+            string[] parts = line.Split(":");
+            if (parts.Length < 2)
             {
-                SimpleGoal simpleGoal = new SimpleGoal(_name, _description, _points);
-                _goals.Add(simpleGoal);
+                string[] subParts = parts[0].Split(",");
+                _points = int.Parse(subParts[0].Trim());
+                _level = int.Parse(subParts[1].Trim());
             }
-            if (type == "EternalGoal")
+            else
             {
-                EternalGoal eternalGoal = new EternalGoal(_name, _description, _points);
-                _goals.Add(eternalGoal);
-            }
-            if (type == "CheckListGoal")
-            {
-                int timesToComplete = int.Parse(parts[4].Trim());
-                int bonusPoints = int.Parse(parts[5].Trim());
-                CheckListGoal checkListGoal = new CheckListGoal(_name, _description, _points, timesToComplete, bonusPoints);
-                _goals.Add(checkListGoal);
+                string[] subParts = parts[1].Split(",");
+                string type = parts[0].Trim();
+                _name = subParts[0].Trim();
+                _description = subParts[1].Trim();
+                int _goalPoints = int.Parse(subParts[2].Trim());
+                if (type == "SimpleGoal")
+                {
+                    SimpleGoal simpleGoal = new SimpleGoal(_name, _description, _goalPoints, bool.Parse(subParts[3].Trim()));
+                    _goals.Add(simpleGoal);
+                }
+                if (type == "EternalGoal")
+                {
+                    EternalGoal eternalGoal = new EternalGoal(_name, _description, _goalPoints);
+                    _goals.Add(eternalGoal);
+                }
+                if (type == "CheckListGoal")
+                {
+                    int bonusPoints = int.Parse(subParts[3].Trim());
+                    int timesToComplete = int.Parse(subParts[4].Trim());
+                    int timesCompleted = int.Parse(subParts[5].Trim());
+                    CheckListGoal checkListGoal = new CheckListGoal(_name, _description, _goalPoints, bonusPoints, timesToComplete, timesCompleted);
+                    _goals.Add(checkListGoal);
+                }
             }
         }
+        return _points;
     }
 }

@@ -5,8 +5,9 @@ public class EternalGoal : Goal
         
     }
 
-    public override void RecordGoal()
+    public override int RecordGoal()
     {
         Console.WriteLine($"You have earned {_points} points for completing the eternal goal: {_name}!");
+        return _points;
     }
 }

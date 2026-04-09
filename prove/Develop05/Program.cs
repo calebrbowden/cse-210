@@ -5,13 +5,16 @@ class Program
     static void Main(string[] args)
     {
         //Console.WriteLine("Hello Develop05 World!");
+        //I made a level system based on the points the user has.
         Goal goal = new Goal("Test Goal", "This is a test goal.", 0);
         Console.WriteLine("Goal Program");
         int choice = 0;
+        int numPoints = goal.GetPoints();
         while (choice != 6)
         {
         Console.WriteLine();
-        Console.WriteLine($"You have {goal.GetPoints()} points.");
+        Console.WriteLine($"You have {numPoints} points.");
+        Console.WriteLine($"You are level {goal.GetLevel(numPoints)}.");
         Console.WriteLine();
         Console.WriteLine("Menu Options:");
         Console.WriteLine("1. Create Goal");
@@ -41,7 +44,7 @@ class Program
                 Console.Write("What is the amount of points associated with this goal? ");
                 string pointsInput = Console.ReadLine();
                 int points = int.Parse(pointsInput);
-                SimpleGoal simpleGoal = new SimpleGoal(name, description, points);
+                SimpleGoal simpleGoal = new SimpleGoal(name, description, points, false);
                 goal._goals.Add(simpleGoal);
             }
             if (goalTypeChoice == 2)
@@ -71,7 +74,7 @@ class Program
                 Console.Write("What is the bonus for accomplishing it that many times? ");
                 string bonusPointsInput = Console.ReadLine();
                 int bonusPoints = int.Parse(bonusPointsInput);
-                CheckListGoal checkListGoal = new CheckListGoal(name, description, points, timesToComplete, bonusPoints);
+                CheckListGoal checkListGoal = new CheckListGoal(name, description, points, bonusPoints, timesToComplete, 0);
                 goal._goals.Add(checkListGoal);
             }
         }
@@ -82,11 +85,11 @@ class Program
         }
         if (choice == 3)
         {
-            goal.Save();
+            goal.Save(numPoints);
         }
         if (choice == 4)
         {
-            goal.Load();
+            numPoints = goal.Load();
         }
         if (choice == 5)
         {
@@ -95,7 +98,7 @@ class Program
             Console.Write("Which goal did you accomplish? ");
             string goalAccomplishedInput = Console.ReadLine();
             int goalAccomplishedChoice = int.Parse(goalAccomplishedInput);
-            goal._goals[goalAccomplishedChoice - 1].RecordGoal();
+            numPoints += goal._goals[goalAccomplishedChoice - 1].RecordGoal();
         }
         }
     }
